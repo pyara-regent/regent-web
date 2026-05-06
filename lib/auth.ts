@@ -9,10 +9,22 @@ import { getSiteUrl, siteConfig } from "@/lib/site-config";
 const allowAdminSeed = process.env.BETTER_AUTH_ALLOW_ADMIN_SEED === "true";
 const fallbackBuildSecret = "development-build-only-secret-change-in-production";
 
+function getAuthSecret() {
+  if (process.env.BETTER_AUTH_SECRET) {
+    return process.env.BETTER_AUTH_SECRET;
+  }
+
+  if (process.env.NODE_ENV === "production" && process.env.DATABASE_URL) {
+    throw new Error("BETTER_AUTH_SECRET is required when admin auth is enabled.");
+  }
+
+  return fallbackBuildSecret;
+}
+
 export const auth = betterAuth({
   appName: siteConfig.name,
   baseURL: process.env.BETTER_AUTH_URL || getSiteUrl(),
-  secret: process.env.BETTER_AUTH_SECRET || fallbackBuildSecret,
+  secret: getAuthSecret(),
   database: db
     ? drizzleAdapter(db, {
         provider: "pg",

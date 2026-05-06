@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Edit3, Plus, Search, Trash2, X } from "lucide-react";
 import type { Product } from "@/lib/db/schema";
 import {
@@ -9,15 +10,22 @@ import {
   deleteProductAction,
   updateProductAction,
 } from "@/app/hidden-admin/dashboard/actions";
+import { AdminPager, paginateAdminItems } from "@/components/admin/admin-pagination";
 
 type PlainProduct = Omit<Product, "createdAt" | "updatedAt"> & {
   createdAt: string;
   updatedAt: string;
 };
 
+const initialActionState = {
+  ok: false,
+  message: "",
+};
+
 export function ProductManager({ products }: { products: PlainProduct[] }) {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<"featured" | "name">("featured");
+  const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<PlainProduct | null>(null);
   const [deleting, setDeleting] = useState<PlainProduct | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -37,6 +45,7 @@ export function ProductManager({ products }: { products: PlainProduct[] }) {
       sort === "name" ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder,
     );
   }, [products, query, sort]);
+  const pageData = paginateAdminItems(filtered, page);
 
   return (
     <div className="flex flex-col gap-5">
@@ -46,7 +55,10 @@ export function ProductManager({ products }: { products: PlainProduct[] }) {
           <input
             className="w-full bg-transparent text-sm outline-none"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setPage(1);
+            }}
             placeholder="Search products"
           />
         </div>
@@ -54,7 +66,10 @@ export function ProductManager({ products }: { products: PlainProduct[] }) {
           <select
             className="rounded-lg border border-black/10 bg-white px-3 py-2 text-sm font-semibold outline-none"
             value={sort}
-            onChange={(event) => setSort(event.target.value as "featured" | "name")}
+            onChange={(event) => {
+              setSort(event.target.value as "featured" | "name");
+              setPage(1);
+            }}
           >
             <option value="featured">Featured</option>
             <option value="name">Name</option>
@@ -81,7 +96,7 @@ export function ProductManager({ products }: { products: PlainProduct[] }) {
           <span>Actions</span>
         </div>
         <div className="divide-y divide-black/10">
-          {filtered.map((item) => (
+          {pageData.items.map((item) => (
             <article
               key={item.id}
               className="grid grid-cols-[88px_minmax(180px,1fr)_120px_112px] items-center px-4 py-3"
@@ -117,8 +132,20 @@ export function ProductManager({ products }: { products: PlainProduct[] }) {
               </div>
             </article>
           ))}
+          {!filtered.length ? (
+            <div className="p-6 text-sm font-semibold text-[#667066]">
+              No products match this search.
+            </div>
+          ) : null}
         </div>
       </div>
+
+      <AdminPager
+        currentPage={pageData.safePage}
+        totalItems={filtered.length}
+        totalPages={pageData.totalPages}
+        onPageChange={setPage}
+      />
 
       {isFormOpen ? (
         <ProductForm
@@ -162,8 +189,19 @@ function ProductForm({
   product: PlainProduct | null;
   onClose: () => void;
 }) {
+  const router = useRouter();
+  const [state, formAction, pending] = useActionState(
+    product ? updateProductAction : createProductAction,
+    initialActionState,
+  );
   const [imageText, setImageText] = useState(product?.images.join("\n") || "");
   const [uploadMessage, setUploadMessage] = useState("");
+
+  useEffect(() => {
+    if (state.ok) {
+      router.refresh();
+    }
+  }, [router, state.ok]);
 
   async function uploadImages(files: FileList | null) {
     if (!files?.length) {
@@ -216,7 +254,7 @@ function ProductForm({
             <X className="size-4" />
           </button>
         </div>
-        <form action={product ? updateProductAction : createProductAction} className="flex flex-col gap-4">
+        <form action={formAction} className="flex flex-col gap-4">
           {product ? <input type="hidden" name="id" value={product.id} /> : null}
           <label className="flex flex-col gap-2 text-sm font-semibold">
             Name
@@ -249,7 +287,7 @@ function ProductForm({
             <input
               className="rounded-lg border border-black/10 px-3 py-2 font-normal"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp,image/gif"
               multiple
               onChange={(event) => uploadImages(event.currentTarget.files)}
             />
@@ -266,12 +304,21 @@ function ProductForm({
             <input name="isPublished" type="checkbox" defaultChecked={product?.isPublished ?? true} />
             Published
           </label>
+          {state.message ? (
+            <p className={`text-sm font-semibold ${state.ok ? "text-[#596359]" : "text-[var(--regent-red)]"}`}>
+              {state.message}
+            </p>
+          ) : null}
           <div className="flex flex-wrap justify-end gap-2">
             <button className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold" onClick={onClose} type="button">
               Cancel
             </button>
-            <button className="rounded-full bg-[var(--regent-blue-900)] px-5 py-3 text-sm font-semibold text-white" type="submit">
-              Save product
+            <button
+              className="rounded-full bg-[var(--regent-blue-900)] px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={pending}
+              type="submit"
+            >
+              {pending ? "Saving..." : "Save product"}
             </button>
           </div>
         </form>

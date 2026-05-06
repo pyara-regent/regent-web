@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { CircleHelp, Package, Settings } from "lucide-react";
+import { CircleHelp, Package, Settings, Wrench } from "lucide-react";
 import { AdminPanel } from "@/components/admin/admin-shell";
-import { listFaqs, listProducts } from "@/lib/products/queries";
+import { listFaqs, listProducts, listServices } from "@/lib/products/queries";
 
 export default async function Page() {
-  const [productData, faqs] = await Promise.all([
+  const [productData, services, faqs] = await Promise.all([
     listProducts({ pageSize: 1, includeDrafts: true }),
+    listServices(true),
     listFaqs(true),
   ]);
   const cards = [
@@ -14,6 +15,12 @@ export default async function Page() {
       value: productData.totalItems,
       href: "/hidden-admin/dashboard/products",
       icon: Package,
+    },
+    {
+      label: "Services",
+      value: services.length,
+      href: "/hidden-admin/dashboard/services",
+      icon: Wrench,
     },
     {
       label: "FAQ",
@@ -31,7 +38,7 @@ export default async function Page() {
 
   return (
     <AdminPanel title="Overview" description="Manage the editable parts of the site.">
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         {cards.map((card) => {
           const Icon = card.icon;
 

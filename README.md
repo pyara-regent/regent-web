@@ -2,14 +2,14 @@
 
 Production website and small admin CMS for Regent Technologies, an industrial blade sharpening and tooling support company in Moratuwa, Sri Lanka.
 
-The public site covers services, products, industries, FAQ, contact, legal pages, and an About page. The private admin area lives only under `/hidden-admin` and manages products, FAQ, and the admin profile. Public pages can render without a database by using seeded fallback content; write actions and admin pages require production services.
+The public site covers services, products, industries, FAQ, contact, legal pages, and an About page. The private admin area lives only under `/hidden-admin` and manages products, services, FAQ, and the admin profile. Public pages can render without a database by using seeded fallback content; write actions and admin pages require production services.
 
 ## Stack
 
 - Next.js App Router with Server Components and Metadata API
 - Better Auth for admin email/password authentication
 - Drizzle ORM with Neon Postgres
-- Cloudflare R2 presigned uploads for product images
+- Cloudflare R2 presigned uploads for product and service images
 - Resend for password reset and contact emails
 - Cloudflare Turnstile for contact form protection
 - Google Analytics 4 through `@next/third-parties/google`
@@ -109,7 +109,7 @@ Apply migrations:
 npm run db:migrate
 ```
 
-Seed the initial admin, products, and FAQ:
+Seed the initial admin, products, services, and FAQ:
 
 ```bash
 npm run db:seed
@@ -122,6 +122,7 @@ The seed script is idempotent and reads the admin email/password from env. Sign-
 - Login: `/hidden-admin`
 - Dashboard: `/hidden-admin/dashboard`
 - Products: `/hidden-admin/dashboard/products`
+- Services: `/hidden-admin/dashboard/services`
 - FAQ: `/hidden-admin/dashboard/faqs`
 - Profile: `/hidden-admin/dashboard/profile`
 
@@ -131,6 +132,25 @@ Product fields:
 - `slug`, `metaTitle`, and `metaDescription` auto-fill when left blank.
 - Up to 3 images are supported.
 - R2 uploads are available when R2 env vars are configured.
+- Admin search and pagination run client-side from server-rendered data, so records remain searchable without exposing a public API.
+
+Service fields:
+
+- `title`, `description`, `image`, `cta`, `modalIntro`, `details`, and `bestFor` are required.
+- `slug` auto-fills from the title when left blank.
+- Service cards power both `/services` and the home page service section.
+- Service details are entered one per line and render in the public service modal.
+
+FAQ fields:
+
+- `question` and `answer` are required.
+- FAQ records can be searched, sorted by `sortOrder`, published/unpublished, edited, and deleted from the custom admin UI.
+
+Admin UX:
+
+- Product, service, and FAQ create/edit/delete flows use custom modal UI, not native browser confirmation dialogs.
+- Validation and duplicate-slug errors return inline messages in the modal instead of raw app error screens.
+- Data-driven public and admin routes include route-level loading skeletons that match the surrounding layout.
 
 ## Deployment Order
 
@@ -140,6 +160,7 @@ Product fields:
 4. Remove seed-only env vars from Vercel after the admin account exists.
 5. Deploy and verify `/`, `/products`, `/industries`, `/contact`, `/faq`, and `/hidden-admin`.
 6. Submit both the contact form and a product inquiry once with production Turnstile keys enabled.
+7. Check admin product, service, and FAQ create/edit/delete flows after deployment.
 
 ## Production Review
 
@@ -156,6 +177,13 @@ Before release, check these routes on desktop and mobile widths:
 - `/faq`
 - `/hidden-admin`
 - `/hidden-admin/dashboard`
+- `/hidden-admin/dashboard/products`
+- `/hidden-admin/dashboard/services`
+- `/hidden-admin/dashboard/faqs`
+
+## License
+
+This repository is proprietary software. See `LICENSE.md`.
 
 ## Verification
 
@@ -163,7 +191,7 @@ Before release, check these routes on desktop and mobile widths:
 npm run lint
 npm run typecheck
 npm run build
-npm audit --omit=dev
+npm audit --audit-level=high
 ```
 
 Do not run `npm audit fix --force` without reviewing the resulting dependency graph. This project uses narrow package overrides for vulnerable transitive packages when the direct dependencies are already on their latest compatible versions.

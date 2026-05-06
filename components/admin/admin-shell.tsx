@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Package, Settings, ShieldCheck, CircleHelp } from "lucide-react";
+import { CircleHelp, Package, Settings, ShieldCheck, Wrench } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { SignOutButton } from "@/components/admin/sign-out-button";
 
 const adminNav = [
   { href: "/hidden-admin/dashboard", label: "Overview", icon: ShieldCheck },
   { href: "/hidden-admin/dashboard/products", label: "Products", icon: Package },
+  { href: "/hidden-admin/dashboard/services", label: "Services", icon: Wrench },
   { href: "/hidden-admin/dashboard/faqs", label: "FAQ", icon: CircleHelp },
   { href: "/hidden-admin/dashboard/profile", label: "Profile", icon: Settings },
 ] as const;

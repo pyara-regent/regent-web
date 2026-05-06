@@ -1,8 +1,19 @@
 import { and, asc, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { getDb, hasDatabase } from "@/lib/db";
-import { faqs, products, type Faq, type Product } from "@/lib/db/schema";
+import {
+  faqs,
+  products,
+  services,
+  type Faq,
+  type Product,
+  type Service,
+} from "@/lib/db/schema";
 import { productSearchKeywordsBySlug } from "@/lib/products/catalog-metadata";
-import { initialFaqs, initialProducts } from "@/lib/products/seed-data";
+import {
+  initialFaqs,
+  initialProducts,
+  initialServices,
+} from "@/lib/products/seed-data";
 
 export type ProductListParams = {
   page?: number;
@@ -45,6 +56,26 @@ function fallbackFaqs(): Faq[] {
     id: item.question,
     question: item.question,
     answer: item.answer,
+    isPublished: item.isPublished,
+    sortOrder: item.sortOrder,
+    createdAt: now,
+    updatedAt: now,
+  }));
+}
+
+function fallbackServices(): Service[] {
+  const now = new Date();
+
+  return initialServices.map((item) => ({
+    id: item.slug,
+    title: item.title,
+    slug: item.slug,
+    description: item.description,
+    image: item.image,
+    cta: item.cta,
+    modalIntro: item.modalIntro,
+    details: [...item.details],
+    bestFor: item.bestFor,
     isPublished: item.isPublished,
     sortOrder: item.sortOrder,
     createdAt: now,
@@ -165,6 +196,28 @@ export async function listFaqs(includeDrafts = false) {
   }
 }
 
+export async function listServices(includeDrafts = false) {
+  if (!hasDatabase) {
+    return fallbackServices().filter((item) => includeDrafts || item.isPublished);
+  }
+
+  try {
+    const db = getDb();
+
+    return await db
+      .select()
+      .from(services)
+      .where(includeDrafts ? undefined : eq(services.isPublished, true))
+      .orderBy(asc(services.sortOrder), asc(services.title));
+  } catch (error) {
+    if (!includeDrafts && isMissingContentTableError(error)) {
+      return fallbackServices().filter((item) => includeDrafts || item.isPublished);
+    }
+
+    throw error;
+  }
+}
+
 function listFallbackProducts({
   page,
   pageSize,
@@ -215,7 +268,7 @@ function isMissingContentTableError(error: unknown): boolean {
   return (
     value.code === "42P01" ||
     value.routine === "parserOpenTable" ||
-    /relation "(products|faqs)" does not exist/i.test(message) ||
+    /relation "(products|faqs|services)" does not exist/i.test(message) ||
     isMissingContentTableError(value.cause)
   );
 }

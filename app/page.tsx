@@ -13,6 +13,7 @@ import { SiteFooter } from "@/components/regent/layout/site-footer";
 import { SiteHeader } from "@/components/regent/layout/site-header";
 import { PillButton } from "@/components/regent/ui/primitives";
 import { createPageMetadata } from "@/lib/seo";
+import { listServices } from "@/lib/products/queries";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = createPageMetadata({
@@ -23,7 +24,9 @@ export const metadata: Metadata = createPageMetadata({
   image: "/regent/hero.png",
 });
 
-export default function Page() {
+export default async function Page() {
+  const services = await listServices();
+
   return (
     <main className="bg-white text-[var(--foreground)]">
       <section
@@ -68,7 +71,7 @@ export default function Page() {
       <HomeAboutSection />
       <PartnerCarouselSection />
       <IndustriesSection />
-      <HomeServicesSection />
+      <HomeServicesSection services={services} />
       <ProductsPreviewSection />
       <WhyRegentSection />
       <ContactCtaSection />

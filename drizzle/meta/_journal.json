@@ -8,6 +8,13 @@
       "when": 1777852916960,
       "tag": "0000_bouncy_lorna_dane",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1778108391824,
+      "tag": "0001_yellow_the_captain",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,13 @@ import { requireAdminSession } from "@/lib/admin/session";
 
 export const runtime = "nodejs";
 
+const allowedImageTypes = new Map([
+  ["image/jpeg", "jpg"],
+  ["image/png", "png"],
+  ["image/webp", "webp"],
+  ["image/gif", "gif"],
+]);
+
 export async function POST(request: Request) {
   await requireAdminSession();
 
@@ -26,13 +33,16 @@ export async function POST(request: Request) {
 
   const body = (await request.json()) as { filename?: string; contentType?: string };
   const contentType = body.contentType || "application/octet-stream";
+  const safeExtension = allowedImageTypes.get(contentType);
 
-  if (!contentType.startsWith("image/")) {
-    return NextResponse.json({ error: "Only images are allowed." }, { status: 400 });
+  if (!safeExtension) {
+    return NextResponse.json(
+      { error: "Only JPG, PNG, WebP, or GIF images are allowed." },
+      { status: 400 },
+    );
   }
 
-  const extension = body.filename?.split(".").pop()?.toLowerCase() || "jpg";
-  const key = `products/${crypto.randomUUID()}.${extension}`;
+  const key = `products/${crypto.randomUUID()}.${safeExtension}`;
   const client = new S3Client({
     region: "auto",
     endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,

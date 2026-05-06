@@ -109,6 +109,7 @@ export const industries = [
 export const services = [
   {
     title: "Blade & Tool Sharpening",
+    slug: "blade-tool-sharpening",
     description:
       "Fully automated tool sharpening with advanced machines for rare accuracy, consistency, efficiency, cleaner cutting, and longer service life.",
     image: "/regent/service-sharpening.png",
@@ -125,6 +126,7 @@ export const services = [
   },
   {
     title: "Pick-Up & Delivery Support",
+    slug: "pickup-delivery-support",
     description:
       "Convenient workshop pickup and return delivery, keeping blade maintenance simple while reducing travel time and production interruptions.",
     image: "/regent/service-delivery.png",

@@ -14,6 +14,7 @@ import {
   createBreadcrumbJsonLd,
   createPageMetadata,
 } from "@/lib/seo";
+import { listServices } from "@/lib/products/queries";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = createPageMetadata({
@@ -24,7 +25,8 @@ export const metadata: Metadata = createPageMetadata({
   image: "/regent/service-sharpening.png",
 });
 
-export default function Page() {
+export default async function Page() {
+  const services = await listServices();
   const breadcrumbStructuredData = createBreadcrumbJsonLd([
     { name: "Home", path: "/" },
     { name: "Services", path: "/services" },
@@ -48,22 +50,14 @@ export default function Page() {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Regent Technologies service support",
-      itemListElement: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Blade & Tool Sharpening",
-          },
+      itemListElement: services.map((service) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: service.title,
+          description: service.description,
         },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Pick-Up & Delivery Support",
-          },
-        },
-      ],
+      })),
     },
     url: absoluteUrl("/services"),
   };
@@ -83,7 +77,7 @@ export default function Page() {
           { href: "/products", label: "Browse Products", variant: "secondary" },
         ]}
       />
-      <ServicesOverviewSection />
+      <ServicesOverviewSection services={services} />
       <ServicesToolTypesSection />
       <ServicesBenefitsSection />
       <ServicesProcessSection />

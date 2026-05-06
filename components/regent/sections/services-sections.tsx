@@ -2,9 +2,9 @@ import Image from "next/image";
 import {
   serviceBenefits,
   serviceProcess,
-  services,
   sharpenedToolTypes,
 } from "@/lib/regent-content";
+import type { Service } from "@/lib/db/schema";
 import { SectionEyebrow } from "@/components/regent/ui/primitives";
 import { ServiceDetailsModal } from "@/components/regent/ui/service-details-modal";
 
@@ -32,7 +32,7 @@ function ServiceBenefitBullet({ children }: { children: string }) {
   );
 }
 
-export function ServicesOverviewSection() {
+export function ServicesOverviewSection({ services }: { services: Service[] }) {
   return (
     <section className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]">
       <div className="space-y-12">
@@ -51,7 +51,7 @@ export function ServicesOverviewSection() {
         <div className="grid gap-4 xl:grid-cols-2">
           {services.map((service) => (
             <article
-              key={service.title}
+              key={service.slug}
               className="relative min-h-[540px] overflow-hidden rounded-2xl bg-black"
             >
               <Image

@@ -4,10 +4,28 @@ import { metaFrom, slugify } from "@/lib/utils";
 const imageUrlSchema = z
   .string()
   .trim()
-  .url("Use a valid image URL.")
+  .min(1, "Image is required.")
   .refine(
-    (value) => value.startsWith("https://") || value.startsWith("/"),
-    "Use HTTPS or a local site asset path.",
+    (value) => {
+      if (value.startsWith("/")) {
+        return true;
+      }
+
+      const publicUploadBase = process.env.R2_PUBLIC_BASE_URL?.replace(/\/$/, "");
+
+      try {
+        const url = new URL(value);
+
+        return Boolean(
+          url.protocol === "https:" &&
+            publicUploadBase &&
+            value.startsWith(`${publicUploadBase}/`),
+        );
+      } catch {
+        return false;
+      }
+    },
+    "Use a local site asset path or an uploaded image URL from the configured R2 public base.",
   );
 
 export const productInputSchema = z
@@ -41,6 +59,34 @@ export const faqInputSchema = z.object({
   sortOrder: z.coerce.number().int().min(0).max(9999).default(100),
 });
 
+const serviceDetailsSchema = z
+  .array(z.string().trim().min(8).max(220))
+  .min(1, "Add at least one service detail.")
+  .max(8, "Use up to 8 service details.");
+
+export const serviceInputSchema = z
+  .object({
+    id: z.string().optional(),
+    title: z.string().trim().min(3, "Title is required.").max(120),
+    slug: z.string().trim().max(120).optional(),
+    description: z.string().trim().min(20, "Description is required.").max(700),
+    image: imageUrlSchema,
+    cta: z.string().trim().min(3, "CTA is required.").max(80),
+    modalIntro: z.string().trim().min(20, "Modal intro is required.").max(700),
+    details: serviceDetailsSchema,
+    bestFor: z.string().trim().min(20, "Best-for text is required.").max(500),
+    isPublished: z.boolean().default(true),
+    sortOrder: z.coerce.number().int().min(0).max(9999).default(100),
+  })
+  .transform((value) => ({
+    ...value,
+    slug: slugify(value.slug || value.title),
+  }))
+  .refine((value) => value.slug.length > 0, {
+    path: ["slug"],
+    message: "Slug is required.",
+  });
+
 export const profileInputSchema = z.object({
   name: z.string().trim().min(2, "Name is required.").max(80),
   image: z.string().trim().url("Use a valid image URL.").optional().or(z.literal("")),
@@ -59,4 +105,5 @@ export const contactInputSchema = z.object({
 });
 
 export type ProductInput = z.infer<typeof productInputSchema>;
+export type ServiceInput = z.infer<typeof serviceInputSchema>;
 export type FaqInput = z.infer<typeof faqInputSchema>;

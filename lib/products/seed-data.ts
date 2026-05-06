@@ -1,4 +1,4 @@
-import { faqItems } from "@/lib/regent-content";
+import { faqItems, services } from "@/lib/regent-content";
 
 const docProduct = "/regent/products/doc";
 
@@ -552,6 +552,19 @@ export const initialProducts = [
 export const initialFaqs = faqItems.map((item, index) => ({
   question: item.question,
   answer: item.answer,
+  isPublished: true,
+  sortOrder: (index + 1) * 10,
+}));
+
+export const initialServices = services.map((item, index) => ({
+  title: item.title,
+  slug: item.slug,
+  description: item.description,
+  image: item.image,
+  cta: item.cta,
+  modalIntro: item.modalIntro,
+  details: [...item.details],
+  bestFor: item.bestFor,
   isPublished: true,
   sortOrder: (index + 1) * 10,
 }));

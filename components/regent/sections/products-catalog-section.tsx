@@ -77,13 +77,13 @@ export function ProductsCatalogSection({
               className="group overflow-hidden rounded-2xl border border-black/8 bg-white shadow-[0_18px_42px_rgba(17,37,90,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(17,37,90,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--regent-red)] focus-visible:ring-offset-4"
               href={`/products/${item.slug}`}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[var(--surface)]">
+              <div className="relative aspect-[4/3] overflow-hidden border-b border-black/5 bg-white">
                 {item.images[0] ? (
                   <Image
                     src={item.images[0]}
                     alt={item.name}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-contain p-5 transition-transform duration-500 group-hover:scale-[1.03]"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />
                 ) : (

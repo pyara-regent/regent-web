@@ -101,6 +101,30 @@ export const products = pgTable(
   ],
 );
 
+export const services = pgTable(
+  "services",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    title: text("title").notNull(),
+    slug: text("slug").notNull().unique(),
+    description: text("description").notNull(),
+    image: text("image").notNull(),
+    cta: text("cta").notNull(),
+    modalIntro: text("modal_intro").notNull(),
+    details: jsonb("details").$type<string[]>().notNull().default([]),
+    bestFor: text("best_for").notNull(),
+    isPublished: boolean("is_published").notNull().default(true),
+    sortOrder: integer("sort_order").notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [
+    index("services_published_sort_idx").on(table.isPublished, table.sortOrder),
+    index("services_slug_idx").on(table.slug),
+  ],
+);
+
 export const faqs = pgTable(
   "faqs",
   {
@@ -128,4 +152,5 @@ export const contactMessages = pgTable("contact_messages", {
 });
 
 export type Product = typeof products.$inferSelect;
+export type Service = typeof services.$inferSelect;
 export type Faq = typeof faqs.$inferSelect;

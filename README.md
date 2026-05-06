@@ -163,3 +163,5 @@ npm audit --omit=dev
 ```
 
 Do not run `npm audit fix --force` without reviewing the resulting dependency graph. This project uses narrow package overrides for vulnerable transitive packages when the direct dependencies are already on their latest compatible versions.
+
+## END

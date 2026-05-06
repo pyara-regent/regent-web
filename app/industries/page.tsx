@@ -3,10 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/regent/layout/page-hero";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
+import { JsonLd } from "@/components/regent/seo/json-ld";
 import { ContactCtaSection } from "@/components/regent/sections/contact-cta";
 import { SectionEyebrow } from "@/components/regent/ui/primitives";
 import { industries } from "@/lib/regent-content";
-import { createPageMetadata } from "@/lib/seo";
+import {
+  createBreadcrumbJsonLd,
+  createItemListJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Industries Served",
@@ -17,8 +22,25 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function Page() {
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Industries", path: "/industries" },
+  ]);
+  const industryListStructuredData = createItemListJsonLd({
+    name: "Industries Served By Regent Technologies",
+    description:
+      "Woodworking, furniture, packaging, printing, metal fabrication, and plastic processing industry support.",
+    path: "/industries",
+    items: industries.map((industry) => ({
+      name: industry.title,
+      path: `/industries/${industry.slug}`,
+      image: industry.image,
+    })),
+  });
+
   return (
     <main className="bg-white text-[var(--foreground)]">
+      <JsonLd data={[breadcrumbStructuredData, industryListStructuredData]} />
       <PageHero
         currentPath="/industries"
         eyebrow="Industries"

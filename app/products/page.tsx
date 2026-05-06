@@ -3,8 +3,13 @@ import { PageHero } from "@/components/regent/layout/page-hero";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
 import { ContactCtaSection } from "@/components/regent/sections/contact-cta";
 import { ProductsCatalogSection } from "@/components/regent/sections/products-catalog-section";
+import { JsonLd } from "@/components/regent/seo/json-ld";
 import { listProducts } from "@/lib/products/queries";
-import { createPageMetadata } from "@/lib/seo";
+import {
+  createBreadcrumbJsonLd,
+  createItemListJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
 
 type SearchParams = Promise<{ q?: string; page?: string }>;
 
@@ -21,9 +26,9 @@ export async function generateMetadata({
   return createPageMetadata({
     title: "Industrial Tools and Blade Sharpening Products Sri Lanka",
     description:
-      "Browse Regent Technologies products including Arden Router Bits, TCT and HSS blade support, power tools, accessories, and workshop tooling for Sri Lanka.",
+      "Browse Regent Technologies products including ARDEN routing tools, pneumatic tools, power tools, tyre rebuilding tools, woodworking tools, accessories, and blade sharpening support.",
     path: "/products",
-    image: "/regent/products/hand-tools.jpg",
+    image: "/regent/products/doc/arden-router-bits-set.png",
     noIndex: hasQueryState,
   });
 }
@@ -36,15 +41,31 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
     pageSize: 9,
     query: params.q,
   });
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+  ]);
+  const productListStructuredData = createItemListJsonLd({
+    name: "Regent Technologies Product Catalog",
+    description:
+      "Industrial tools, ARDEN routing tools, pneumatic tools, power tools, tyre rebuilding tools, woodworking products, and blade sharpening support.",
+    path: "/products",
+    items: data.items.map((item) => ({
+      name: item.name,
+      path: `/products/${item.slug}`,
+      image: item.images[0],
+    })),
+  });
 
   return (
     <main className="bg-white text-[var(--foreground)]">
+      <JsonLd data={[breadcrumbStructuredData, productListStructuredData]} />
       <PageHero
         currentPath="/products"
         eyebrow="Product Catalog"
         title="Professional Tools, Accessories, And Industrial Product Support"
-        description="Browse the Regent Technologies product catalog for workshop tools, accessories, and industrial support products aligned with our sharpening and maintenance services."
-        image="/regent/products/hand-tools.jpg"
+        description="Browse ARDEN routing tools, pneumatic tools, power tools, tyre rebuilding tools, woodworking hardware, accessories, and sharpening-supported industrial products."
+        image="/regent/products/doc/arden-router-bits-set.png"
         imageAlt="Regent Technologies product catalog"
         actions={[
           { href: "/contact", label: "Ask About Products" },

@@ -3,10 +3,16 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/regent/layout/page-hero";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
+import { JsonLd } from "@/components/regent/seo/json-ld";
 import { ContactCtaSection } from "@/components/regent/sections/contact-cta";
 import { ArrowBullet, PillButton, SectionEyebrow } from "@/components/regent/ui/primitives";
 import { industries, serviceBenefits } from "@/lib/regent-content";
-import { createPageMetadata } from "@/lib/seo";
+import {
+  absoluteUrl,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
+import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
 type Params = Promise<{ slug: string }>;
 
@@ -43,9 +49,32 @@ export default async function Page({ params }: { params: Params }) {
   if (!industry) {
     notFound();
   }
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Industries", path: "/industries" },
+    { name: industry.title, path: `/industries/${industry.slug}` },
+  ]);
+  const industryServiceStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${absoluteUrl(`/industries/${industry.slug}`)}#industry-service`,
+    name: `${industry.title} sharpening and tooling support`,
+    description: industry.longDescription,
+    url: absoluteUrl(`/industries/${industry.slug}`),
+    image: absoluteUrl(industry.image),
+    provider: {
+      "@id": `${getSiteUrl()}#localbusiness`,
+      name: siteConfig.name,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Sri Lanka",
+    },
+  };
 
   return (
     <main className="bg-white text-[var(--foreground)]">
+      <JsonLd data={[breadcrumbStructuredData, industryServiceStructuredData]} />
       <PageHero
         currentPath="/industries"
         eyebrow="Industry"

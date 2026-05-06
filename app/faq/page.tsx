@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/regent/seo/json-ld";
 import { ContactCtaSection } from "@/components/regent/sections/contact-cta";
 import { FaqSection } from "@/components/regent/sections/faq-section";
 import { listFaqs } from "@/lib/products/queries";
-import { createPageMetadata } from "@/lib/seo";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "FAQ",
@@ -19,6 +19,10 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const faqs = await listFaqs();
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "FAQ", path: "/faq" },
+  ]);
   const faqStructuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -34,7 +38,7 @@ export default async function Page() {
 
   return (
     <main className="bg-white text-[var(--foreground)]">
-      <JsonLd data={faqStructuredData} />
+      <JsonLd data={[breadcrumbStructuredData, faqStructuredData]} />
       <PageHero
         currentPath="/faq"
         eyebrow="Frequently Asked Questions"

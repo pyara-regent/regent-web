@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from "@/components/regent/analytics/google-analytics";
 import { JsonLd } from "@/components/regent/seo/json-ld";
 import { absoluteUrl } from "@/lib/seo";
 import { getSiteUrl, siteConfig } from "@/lib/site-config";
@@ -90,13 +91,22 @@ export default function RootLayout({
       "@type": "LocalBusiness",
       "@id": `${siteUrl}#localbusiness`,
       name: siteConfig.legalName,
+      alternateName: "Regent",
       url: siteUrl,
+      logo: absoluteUrl("/regent/brand/regent-logo-transparent.png"),
       image: absoluteUrl("/regent/hero.png"),
       description: siteConfig.description,
       email: siteConfig.email,
       telephone: siteConfig.phoneNumbers.map((phone) =>
         phone.href.replace(/^tel:/, ""),
       ),
+      contactPoint: siteConfig.phoneNumbers.map((phone) => ({
+        "@type": "ContactPoint",
+        telephone: phone.href.replace(/^tel:/, ""),
+        contactType: phone.primary ? "customer service" : "sales",
+        areaServed: "LK",
+        availableLanguage: ["en"],
+      })),
       address: {
         "@type": "PostalAddress",
         streetAddress: "403 Bandaranayake Mawatha",
@@ -130,6 +140,7 @@ export default function RootLayout({
       <body className="min-h-full font-sans">
         <JsonLd data={organizationStructuredData} />
         {children}
+        <GoogleAnalytics />
       </body>
     </html>
   );

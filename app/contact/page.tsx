@@ -6,8 +6,10 @@ import {
 } from "@/components/regent/sections/contact-sections";
 import { PageHero } from "@/components/regent/layout/page-hero";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
+import { JsonLd } from "@/components/regent/seo/json-ld";
 import { contactEmail } from "@/lib/regent-content";
-import { createPageMetadata } from "@/lib/seo";
+import { absoluteUrl, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
+import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Contact Regent Technologies",
@@ -18,8 +20,30 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function Page() {
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Contact Regent Technologies", path: "/contact" },
+  ]);
+  const contactPageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${absoluteUrl("/contact")}#contact-page`,
+    name: "Contact Regent Technologies",
+    description: metadata.description,
+    url: absoluteUrl("/contact"),
+    mainEntity: {
+      "@id": `${getSiteUrl()}#localbusiness`,
+      name: siteConfig.name,
+      email: siteConfig.email,
+      telephone: siteConfig.phoneNumbers.map((phone) =>
+        phone.href.replace(/^tel:/, ""),
+      ),
+    },
+  };
+
   return (
     <main className="bg-white text-[var(--foreground)]">
+      <JsonLd data={[breadcrumbStructuredData, contactPageStructuredData]} />
       <PageHero
         currentPath="/contact"
         eyebrow="Get In Touch"

@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ResetPasswordForm } from "@/components/admin/admin-auth";
+import { privateRouteRobots } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Set Admin Password",
-  robots: {
-    index: false,
-    follow: false,
-  },
+  robots: privateRouteRobots,
 };
 
 export default function Page() {

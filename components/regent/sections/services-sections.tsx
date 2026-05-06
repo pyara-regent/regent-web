@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { serviceBenefits, serviceProcess, services } from "@/lib/regent-content";
+import {
+  serviceBenefits,
+  serviceProcess,
+  services,
+  sharpenedToolTypes,
+} from "@/lib/regent-content";
 import { SectionEyebrow } from "@/components/regent/ui/primitives";
 import { ServiceDetailsModal } from "@/components/regent/ui/service-details-modal";
 
@@ -116,6 +121,48 @@ export function ServicesBenefitsSection() {
             className="h-[520px] w-full object-cover"
             sizes="(max-width: 1024px) 100vw, 560px"
           />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ServicesToolTypesSection() {
+  return (
+    <section className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]">
+      <div className="space-y-10">
+        <div className="max-w-[920px] space-y-4">
+          <SectionEyebrow label="Types Of Blades & Tools Sharpened" />
+          <h2 className="text-3xl font-bold leading-[1.25] md:text-[32px] md:leading-[48px]">
+            Industrial blade and cutter coverage from the business brief
+          </h2>
+          <p className="text-lg leading-8 text-[var(--muted)]">
+            Regent Technologies handles a practical range of production blades,
+            cutting tools, and boring bits used across woodworking, packaging,
+            printing, plastic, metal, and industrial workshop operations.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {sharpenedToolTypes.map((item) => (
+            <article
+              key={item.title}
+              className="overflow-hidden rounded-2xl border border-black/8 bg-white shadow-[0_16px_40px_rgba(17,37,90,0.06)]"
+            >
+              <div className="relative aspect-[4/3] bg-[var(--surface)]">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-contain p-4"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 33vw, 25vw"
+                />
+              </div>
+              <h3 className="min-h-20 px-5 py-4 text-lg font-bold leading-7 text-[var(--foreground)]">
+                {item.title}
+              </h3>
+            </article>
+          ))}
         </div>
       </div>
     </section>

@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AdminLoginForm } from "@/components/admin/admin-auth";
 import { getAdminSession } from "@/lib/admin/session";
+import { privateRouteRobots } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Admin Login",
-  robots: {
-    index: false,
-    follow: false,
-  },
+  robots: privateRouteRobots,
 };
 
 export default async function Page() {

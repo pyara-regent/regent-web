@@ -108,23 +108,23 @@ export const industries = [
 
 export const services = [
   {
-    title: "Precision Blade Sharpening",
+    title: "Blade & Tool Sharpening",
     description:
-      "Automated sharpening for TCT and HSS blades with accurate grinding angles, controlled cooling, and clean edge recovery for longer tool life.",
+      "Fully automated tool sharpening with advanced machines for rare accuracy, consistency, efficiency, cleaner cutting, and longer service life.",
     image: "/regent/service-sharpening.png",
     cta: "View Sharpening Process",
     modalIntro:
-      "A controlled sharpening service for production teams that need clean edges, stable cuts, and dependable blade life.",
+      "A fully automated sharpening service for production teams that need consistent cutting quality, reduced downtime, and better tool performance.",
     details: [
-      "Inspection of blade wear, tooth condition, and cutting-edge geometry before sharpening.",
-      "Automated grinding for repeatable angles across TCT and HSS cutting tools.",
-      "Cooling-supported sharpening to reduce heat stress and protect cutting performance.",
-      "Practical finishing and return handling so tools are ready for workshop use.",
+      "Advanced automated sharpening machines, a capability that remains rare in Sri Lanka.",
+      "Accurate and repeatable sharpening for industrial blades and precision cutting tools.",
+      "Controlled grinding and cooling support to protect tool geometry and cutting performance.",
+      "Service outcomes focused on improved tool performance, reduced downtime, and higher profitability.",
     ],
-    bestFor: "Circular saw blades, TCT tools, HSS tools, woodworking blades, and production cutting tools.",
+    bestFor: "TCT tools, HSS tools, carbon blades, circular saw blades, paper cutting blades, profile cutters, grooving cutters, and production cutting tools.",
   },
   {
-    title: "Pick-Up & Delivery Service",
+    title: "Pick-Up & Delivery Support",
     description:
       "Convenient workshop pickup and return delivery, keeping blade maintenance simple while reducing travel time and production interruptions.",
     image: "/regent/service-delivery.png",
@@ -141,48 +141,99 @@ export const services = [
   },
 ] as const;
 
-export const productFeatures = [
+export const sharpenedToolTypes = [
   {
-    title: "Precision Blade Sharpening",
-    slug: "precision-blade-sharpening",
-    category: "Sharpening Services",
-    image: "/regent/products/grinding-wheel.jpg",
-    summary: "Automated blade care for clean edges, stable cuts, and longer tool life.",
+    title: "Polythene Bag Cutting Blade",
+    image: "/regent/products/doc/polythene-bag-cutting-blades.jpg",
   },
   {
-    title: "Arden Router Bits",
+    title: "Winder Blade",
+    image: "/regent/products/doc/winder-blades.png",
+  },
+  {
+    title: "Metal Plate Cutting Blade",
+    image: "/regent/products/doc/metal-plate-cutting-blades.jpg",
+  },
+  {
+    title: "Reel Cutting Blade",
+    image: "/regent/products/doc/reel-cutting-blades.jpg",
+  },
+  {
+    title: "Crusher Blade",
+    image: "/regent/products/doc/crusher-blades.png",
+  },
+  {
+    title: "Paper Cutting Blades",
+    image: "/regent/products/doc/paper-cutting-blades.jpg",
+  },
+  {
+    title: "Planer Blade",
+    image: "/regent/products/doc/planer-carbon-blades.png",
+  },
+  {
+    title: "Circular Saw Blade",
+    image: "/regent/products/doc/circular-saw-blade.jpg",
+  },
+  {
+    title: "Profile Cutting Blade",
+    image: "/regent/products/doc/profile-cutting-blade.png",
+  },
+  {
+    title: "Grooving Cutter Blade",
+    image: "/regent/products/doc/grooving-cutter-blade.jpg",
+  },
+  {
+    title: "Finger Joint Cutter Blade",
+    image: "/regent/products/doc/finger-joint-cutter-blade.jpg",
+  },
+  {
+    title: "Hinge Boring Bit",
+    image: "/regent/products/doc/hinge-boring-bit.jpg",
+  },
+] as const;
+
+export const productFeatures = [
+  {
+    title: "Blade & Tool Sharpening",
+    slug: "precision-blade-sharpening",
+    category: "Sharpening Services",
+    image: "/regent/products/doc/circular-saw-blade.jpg",
+    summary: "Fully automated sharpening for blades and precision cutting tools.",
+  },
+  {
+    title: "ARDEN Routing Tools",
     slug: "arden-router-bits",
     category: "Featured Brand",
-    image: "/regent/products/router-bits.jpg",
-    summary: "Sole-agent router bit supply for woodworking profiles and production work.",
+    image: "/regent/products/doc/arden-router-bits-set.png",
+    summary: "Sole importer for high-quality router bits from Arden Precision Technology Co. Ltd. of Taiwan.",
+  },
+  {
+    title: "Pneumatic Tools",
+    slug: "pneumatic-tools",
+    category: "Pneumatic Tools",
+    image: "/regent/products/doc/pneumatic-brad-nailer-f50.jpg",
+    summary: "Brad nailers, staplers, and pneumatic screwdrivers for workshop production.",
   },
   {
     title: "Power Tools",
     slug: "power-tools",
-    category: "Machines & Tools",
-    image: "/regent/products/angle-grinder.jpg",
-    summary: "Workshop-ready power tools for production, service, and fabrication teams.",
+    category: "Power Tools",
+    image: "/regent/products/doc/drill-machine.png",
+    summary: "Routers, drills, grinders, planers, jig-saws, circular saws, and screw drivers.",
   },
   {
-    title: "Industrial Drills",
-    slug: "industrial-drills",
-    category: "Drilling Tools",
-    image: "/regent/products/power-drill.jpg",
-    summary: "Heavy-duty drilling support for site, workshop, and maintenance work.",
+    title: "Woodworking Tools",
+    slug: "woodworking-tools",
+    category: "Woodworking Tools",
+    image: "/regent/products/doc/drawer-runners.png",
+    summary: "Furniture hardware, sanding products, router bits, cutter sets, and planer blades.",
   },
   {
-    title: "Power Tool Accessories",
-    slug: "power-tool-accessories",
-    category: "Accessories",
-    image: "/regent/products/drill-bits.jpg",
-    summary: "Bits, fittings, and consumables to keep daily tool systems moving.",
-  },
-  {
-    title: "Hand Tools",
-    slug: "hand-tools",
-    category: "Workshop Essentials",
-    image: "/regent/products/hand-tools.jpg",
-    summary: "Durable hand tools for technicians, maintenance teams, and fabrication use.",
+    title: "Tyre Rebuilding Tools",
+    slug: "tyre-rebuilding-tools",
+    category: "Industrial Equipment",
+    image: "/regent/products/doc/tyre-buffing-blades.jpg",
+    summary: "Tyre buffing blades and R6 refills for tyre rebuilding workflows.",
   },
 ] as const;
 
@@ -245,24 +296,24 @@ export const contactSupportPoints = [
 ] as const;
 
 export const serviceBenefits = [
-  "Exact grinding angles for consistent cutting performance",
-  "Integrated cooling to protect blade hardness during sharpening",
+  "Fully automated sharpening for rare accuracy and repeatability",
+  "Improved tool performance with reduced production downtime",
   "Reliable pickup and delivery for industrial customers",
-  "Support for repeat-service maintenance schedules",
+  "Support for blades, cutters, bits, and production-critical tools",
 ] as const;
 
 export const serviceProcess = [
   {
-    title: "Blade Assessment",
-    body: "We inspect wear patterns, edge condition, and blade geometry before selecting the correct sharpening path.",
+    title: "Tool Assessment",
+    body: "We inspect blade type, cutter profile, edge condition, and tool geometry before selecting the correct automated sharpening path.",
   },
   {
-    title: "Automated Precision Grinding",
-    body: "Our sharpening machines restore the edge profile with repeatable accuracy for TCT and HSS tooling.",
+    title: "Automated Sharpening",
+    body: "Advanced machines restore cutting edges with repeatable accuracy across blades, cutters, boring bits, TCT, HSS, and carbon tools.",
   },
   {
-    title: "Cooling And Finishing",
-    body: "Integrated cooling and careful finishing reduce heat stress, surface damage, and premature tool failure.",
+    title: "Controlled Finishing",
+    body: "Cooling-supported finishing helps protect tool integrity, reduce heat stress, and support cleaner cutting performance.",
   },
   {
     title: "Return To Operation",
@@ -270,99 +321,7 @@ export const serviceProcess = [
   },
 ] as const;
 
-export const productCatalog = [
-  {
-    slug: "precision-blade-sharpening",
-    title: "Precision Blade Sharpening",
-    category: "Sharpening Services",
-    image: "/regent/products/grinding-wheel.jpg",
-    summary: "Automated blade sharpening support for industrial cutting performance and edge recovery.",
-  },
-  {
-    slug: "power-tools",
-    title: "Power Tools",
-    category: "Machines & Tools",
-    image: "/regent/products/angle-grinder.jpg",
-    summary: "Professional-grade power tools selected for workshop and production-floor use.",
-  },
-  {
-    slug: "arden-router-bits",
-    title: "Arden Router Bits",
-    category: "Featured Brand",
-    image: "/regent/products/router-bits.jpg",
-    summary: "Regent Technologies is the sole agent for Arden Router Bits, supporting precision woodworking and production applications.",
-  },
-  {
-    slug: "tyre-rebuilding-tools",
-    title: "Tyre Rebuilding Tools",
-    category: "Industrial Equipment",
-    image: "/regent/products/tyre-rebuild.jpg",
-    summary: "Specialized support solutions and related tooling for tyre rebuilding operations.",
-  },
-  {
-    slug: "woodworking-tools",
-    title: "Woodworking Tools",
-    category: "Cutting Tools",
-    image: "/regent/products/router-bits.jpg",
-    summary: "Cutting tools and accessories designed for woodworking accuracy and durability.",
-  },
-  {
-    slug: "power-tool-accessories",
-    title: "Power Tool Accessories",
-    category: "Accessories",
-    image: "/regent/products/drill-bits.jpg",
-    summary: "Consumables, fittings, and accessory products to keep tool systems running reliably.",
-  },
-  {
-    slug: "hand-tools",
-    title: "Hand Tools",
-    category: "Workshop Essentials",
-    image: "/regent/products/hand-tools.jpg",
-    summary: "Workshop-ready hand tools for technicians, maintenance teams, and fabrication use.",
-  },
-  {
-    slug: "tct-blades",
-    title: "TCT Blades",
-    category: "Cutting Tools",
-    image: "/regent/products/saw-blade.jpg",
-    summary: "Tungsten carbide tipped blades suited for industrial cutting applications and repeat sharpening cycles.",
-  },
-  {
-    slug: "hss-blades",
-    title: "HSS Blades",
-    category: "Cutting Tools",
-    image: "/regent/products/grinding-wheel.jpg",
-    summary: "High-speed steel blade support for customers who need reliable sharpening turnaround and tool care.",
-  },
-  {
-    slug: "industrial-drills",
-    title: "Industrial Drills",
-    category: "Machines & Tools",
-    image: "/regent/products/power-drill.jpg",
-    summary: "Heavy-duty drill equipment and compatible systems for demanding workshop environments.",
-  },
-  {
-    slug: "rebuild-wheel-systems",
-    title: "Rebuild Wheel Systems",
-    category: "Industrial Equipment",
-    image: "/regent/products/tyre-rebuild.jpg",
-    summary: "Equipment support options and compatible tooling for rebuild and restoration workflows.",
-  },
-  {
-    slug: "maintenance-kits",
-    title: "Maintenance Kits",
-    category: "Accessories",
-    image: "/regent/products/hand-tools.jpg",
-    summary: "Support kits and workshop consumables for routine maintenance and quick on-site servicing.",
-  },
-  {
-    slug: "technician-toolkits",
-    title: "Technician Toolkits",
-    category: "Workshop Essentials",
-    image: "/regent/products/hand-tools.jpg",
-    summary: "Portable toolkits prepared for workshop technicians and field-ready service teams.",
-  },
-] as const;
+export const productCatalog = productFeatures;
 
 export const faqItems = [
   {

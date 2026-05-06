@@ -7,8 +7,13 @@ import { JsonLd } from "@/components/regent/seo/json-ld";
 import { ProductGallery } from "@/components/regent/ui/product-gallery";
 import { ProductInquiryModal } from "@/components/regent/ui/product-inquiry-modal";
 import { SectionEyebrow } from "@/components/regent/ui/primitives";
+import { productCategoryBySlug } from "@/lib/products/catalog-metadata";
 import { getProductBySlug } from "@/lib/products/queries";
-import { absoluteUrl, createPageMetadata } from "@/lib/seo";
+import {
+  absoluteUrl,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
 import { getSiteUrl } from "@/lib/site-config";
 
 type Params = Promise<{ slug: string }>;
@@ -28,8 +33,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     });
   }
 
+  const title = /\bSri Lanka\b/i.test(product.metaTitle)
+    ? product.metaTitle
+    : `${product.metaTitle} Sri Lanka`;
+
   return createPageMetadata({
-    title: product.metaTitle,
+    title,
     description: product.metaDescription,
     path: `/products/${product.slug}`,
     image: product.images[0] ?? "/regent/products-main.png",
@@ -47,16 +56,24 @@ export default async function Page({ params }: { params: Params }) {
 
   const heroImage = product.images[0] ?? "/regent/products-main.png";
   const productUrl = `${getSiteUrl()}/products/${product.slug}`;
+  const category = productCategoryBySlug[product.slug] ?? "Industrial Tools";
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: product.name, path: `/products/${product.slug}` },
+  ]);
   const productStructuredData = {
     "@context": "https://schema.org",
     "@type": "Product",
     "@id": `${productUrl}#product`,
     name: product.name,
     description: product.description,
+    category,
     image: product.images.length
       ? product.images.map((image) => absoluteUrl(image))
       : [absoluteUrl("/regent/products-main.png")],
     url: productUrl,
+    mainEntityOfPage: productUrl,
     brand: {
       "@type": "Brand",
       name: "Regent Technologies",
@@ -65,11 +82,23 @@ export default async function Page({ params }: { params: Params }) {
       "@id": `${getSiteUrl()}#localbusiness`,
       name: "Regent Technologies",
     },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Category",
+        value: category,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Availability",
+        value: "Contact Regent Technologies for current pricing and availability",
+      },
+    ],
   };
 
   return (
     <main className="bg-white text-[var(--foreground)]">
-      <JsonLd data={productStructuredData} />
+      <JsonLd data={[breadcrumbStructuredData, productStructuredData]} />
       <PageHero
         currentPath="/products"
         eyebrow="Product"

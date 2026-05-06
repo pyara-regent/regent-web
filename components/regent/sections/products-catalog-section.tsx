@@ -2,23 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import type { Product } from "@/lib/db/schema";
+import { productCategoryBySlug } from "@/lib/products/catalog-metadata";
 import { PaginationNav } from "@/components/regent/ui/pagination-nav";
-
-const productCategoryBySlug: Record<string, string> = {
-  "precision-blade-sharpening": "Sharpening Services",
-  "arden-router-bits": "Featured Brand",
-  "power-tools": "Machines & Tools",
-  "tyre-rebuilding-tools": "Industrial Equipment",
-  "woodworking-tools": "Cutting Tools",
-  "power-tool-accessories": "Accessories",
-  "hand-tools": "Workshop Essentials",
-  "tct-blades": "Cutting Tools",
-  "hss-blades": "Cutting Tools",
-  "industrial-drills": "Drilling Tools",
-  "rebuild-wheel-systems": "Industrial Equipment",
-  "maintenance-kits": "Accessories",
-  "technician-toolkits": "Workshop Essentials",
-};
 
 export function ProductsCatalogSection({
   items,
@@ -78,8 +63,9 @@ export function ProductsCatalogSection({
           </h3>
         </div>
         <p className="mt-3 max-w-[640px] text-base leading-7 text-[var(--muted)] md:mt-0">
-          Ask our team about Arden Router Bits, matching cutter profiles, and
-          practical options for woodworking and production use.
+          Ask our team about ARDEN router bits from Arden Precision Technology
+          Co. Ltd. of Taiwan, matching cutter profiles, and practical options
+          for woodworking and production use.
         </p>
       </div>
 
@@ -113,7 +99,7 @@ export function ProductsCatalogSection({
                 <h3 className="mt-3 text-2xl font-bold leading-8 text-[var(--foreground)]">
                   {item.name}
                 </h3>
-                <p className="mt-4 text-base leading-7 text-[var(--muted)]">
+                <p className="mt-4 line-clamp-4 text-base leading-7 text-[var(--muted)]">
                   {item.description}
                 </p>
                 <span className="mt-6 inline-flex text-base font-semibold text-[var(--regent-red)] transition-colors duration-200 group-hover:text-[var(--regent-red-dark)]">

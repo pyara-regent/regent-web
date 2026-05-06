@@ -5,48 +5,78 @@ import {
   ServicesBenefitsSection,
   ServicesOverviewSection,
   ServicesProcessSection,
+  ServicesToolTypesSection,
 } from "@/components/regent/sections/services-sections";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
 import { JsonLd } from "@/components/regent/seo/json-ld";
-import { absoluteUrl, createPageMetadata } from "@/lib/seo";
+import {
+  absoluteUrl,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Industrial Blade Sharpening Services Sri Lanka",
+  title: "Blade and Tool Sharpening Services Sri Lanka",
   description:
-    "Explore Regent Technologies automated blade sharpening, TCT and HSS tool care, and pickup and delivery services for industrial customers in Sri Lanka.",
+    "Explore Regent Technologies fully automated blade and tool sharpening, industrial cutter care, and pickup and delivery support for Sri Lankan production teams.",
   path: "/services",
-  image: "/regent/service-delivery.png",
+  image: "/regent/service-sharpening.png",
 });
 
 export default function Page() {
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+  ]);
   const serviceStructuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
     "@id": `${absoluteUrl("/services")}#industrial-blade-sharpening-service`,
-    name: "Industrial blade sharpening and pickup service",
-    serviceType: "Industrial blade sharpening",
+    name: "Blade and tool sharpening service",
+    serviceType: "Automated blade and tool sharpening",
     description: metadata.description,
     provider: {
       "@id": `${siteConfig.url.replace(/\/$/, "")}#localbusiness`,
       name: siteConfig.name,
     },
+    image: absoluteUrl("/regent/service-sharpening.png"),
     areaServed: {
       "@type": "Country",
       name: "Sri Lanka",
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Regent Technologies service support",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Blade & Tool Sharpening",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Pick-Up & Delivery Support",
+          },
+        },
+      ],
     },
     url: absoluteUrl("/services"),
   };
 
   return (
     <main className="bg-white text-[var(--foreground)]">
-      <JsonLd data={serviceStructuredData} />
+      <JsonLd data={[breadcrumbStructuredData, serviceStructuredData]} />
       <PageHero
         currentPath="/services"
-        eyebrow="Sharpening Services"
-        title="Industrial Blade Sharpening And Pickup Services"
-        description="Explore Regent Technologies service capabilities for automated sharpening, blade recovery, and coordinated pickup and delivery for industrial customers."
-        image="/regent/service-delivery.png"
+        eyebrow="Fully Automated Sharpening"
+        title="Blade & Tool Sharpening For Industrial Production"
+        description="Regent Technologies uses advanced automated sharpening machines to deliver accurate, consistent, and efficient blade and precision tool care for industrial customers."
+        image="/regent/service-sharpening.png"
         imageAlt="Regent Technologies services"
         actions={[
           { href: "/contact", label: "Schedule A Service" },
@@ -54,6 +84,7 @@ export default function Page() {
         ]}
       />
       <ServicesOverviewSection />
+      <ServicesToolTypesSection />
       <ServicesBenefitsSection />
       <ServicesProcessSection />
       <ContactCtaSection />

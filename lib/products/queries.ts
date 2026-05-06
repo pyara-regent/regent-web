@@ -1,23 +1,8 @@
 import { and, asc, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { getDb, hasDatabase } from "@/lib/db";
 import { faqs, products, type Faq, type Product } from "@/lib/db/schema";
+import { productSearchKeywordsBySlug } from "@/lib/products/catalog-metadata";
 import { initialFaqs, initialProducts } from "@/lib/products/seed-data";
-
-const searchableCategoryBySlug: Record<string, string> = {
-  "precision-blade-sharpening": "sharpening services blade sharpening",
-  "arden-router-bits": "featured brand arden router bits woodworking",
-  "power-tools": "machines tools power tools",
-  "tyre-rebuilding-tools": "industrial equipment tyre rebuilding tools",
-  "woodworking-tools": "cutting tools woodworking tools",
-  "power-tool-accessories": "accessories power tool accessories drill bits",
-  "hand-tools": "workshop essentials hand tools",
-  "tct-blades": "cutting tools tct blades",
-  "hss-blades": "cutting tools hss blades",
-  "industrial-drills": "drilling tools industrial drills",
-  "rebuild-wheel-systems": "industrial equipment rebuild wheel systems",
-  "maintenance-kits": "accessories maintenance kits",
-  "technician-toolkits": "workshop essentials technician toolkits",
-};
 
 export type ProductListParams = {
   page?: number;
@@ -204,7 +189,7 @@ function listFallbackProducts({
         item.name,
         item.description,
         item.slug.replaceAll("-", " "),
-        searchableCategoryBySlug[item.slug] ?? "",
+        productSearchKeywordsBySlug[item.slug] ?? "",
       ].join(" ").toLowerCase();
 
       return terms.every((term) => haystack.includes(term));

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/regent/layout/page-hero";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
+import { JsonLd } from "@/components/regent/seo/json-ld";
 import { ContactCtaSection } from "@/components/regent/sections/contact-cta";
 import { PartnerCarouselSection } from "@/components/regent/sections/partner-carousel";
 import { SectionEyebrow } from "@/components/regent/ui/primitives";
 import { whyChoosePoints } from "@/lib/regent-content";
-import { createPageMetadata } from "@/lib/seo";
+import { absoluteUrl, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
+import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = createPageMetadata({
   title: "About Regent Technologies",
@@ -17,8 +19,26 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function Page() {
+  const breadcrumbStructuredData = createBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "About Regent Technologies", path: "/about" },
+  ]);
+  const aboutPageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${absoluteUrl("/about")}#about-page`,
+    name: "About Regent Technologies",
+    description: metadata.description,
+    url: absoluteUrl("/about"),
+    mainEntity: {
+      "@id": `${getSiteUrl()}#localbusiness`,
+      name: siteConfig.name,
+    },
+  };
+
   return (
     <main className="bg-white text-[var(--foreground)]">
+      <JsonLd data={[breadcrumbStructuredData, aboutPageStructuredData]} />
       <PageHero
         currentPath="/about"
         eyebrow="About Regent"

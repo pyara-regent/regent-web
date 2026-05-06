@@ -87,6 +87,66 @@ export function createPageMetadata({
   };
 }
 
+export const privateRouteRobots = {
+  index: false,
+  follow: false,
+  googleBot: {
+    index: false,
+    follow: false,
+  },
+} as const;
+
+export function createBreadcrumbJsonLd(
+  items: Array<{
+    name: string;
+    path: `/${string}`;
+  }>,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
+  };
+}
+
+export function createItemListJsonLd({
+  name,
+  description,
+  path,
+  items,
+}: {
+  name: string;
+  description?: string;
+  path: `/${string}`;
+  items: Array<{
+    name: string;
+    path: `/${string}`;
+    image?: string;
+  }>;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${absoluteUrl(path)}#item-list`,
+    name,
+    ...(description ? { description } : {}),
+    url: absoluteUrl(path),
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: absoluteUrl(item.path),
+      ...(item.image ? { image: absoluteUrl(item.image) } : {}),
+    })),
+  };
+}
+
 export function sanitizeJsonLd(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }

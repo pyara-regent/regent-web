@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from "@/components/regent/analytics/google-analytics";
 import { JsonLd } from "@/components/regent/seo/json-ld";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, createOgImagePath } from "@/lib/seo";
 import { getSiteUrl, siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -10,6 +10,13 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+});
+
+const rootOgImage = createOgImagePath({
+  title: siteConfig.name,
+  description: siteConfig.description,
+  path: "/",
+  image: "/regent/hero.png",
 });
 
 export const metadata: Metadata = {
@@ -42,10 +49,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/regent/hero.png",
-        width: 1600,
-        height: 900,
-        alt: "Regent Technologies industrial blade sharpening",
+        url: rootOgImage,
+        width: 1200,
+        height: 630,
+        alt: "Regent Technologies website preview",
       },
     ],
   },
@@ -53,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [absoluteUrl("/regent/hero.png")],
+    images: [absoluteUrl(rootOgImage)],
   },
   robots: {
     index: true,

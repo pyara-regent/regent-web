@@ -2,9 +2,43 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
 import { SiteHeader } from "@/components/regent/layout/site-header";
+import { absoluteUrl, createOgImagePath } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
+
+const description =
+  "The requested Regent Technologies page could not be found. Return to the homepage or contact Regent Technologies for direct support.";
+const notFoundOgImage = createOgImagePath({
+  title: "Page Not Found",
+  description,
+  path: "/",
+  image: "/regent/hero.png",
+});
 
 export const metadata: Metadata = {
   title: "Page Not Found",
+  description,
+  openGraph: {
+    title: `Page Not Found - ${siteConfig.name}`,
+    description,
+    url: absoluteUrl("/"),
+    siteName: siteConfig.name,
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: absoluteUrl(notFoundOgImage),
+        width: 1200,
+        height: 630,
+        alt: "Regent Technologies page not found preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Page Not Found - ${siteConfig.name}`,
+    description,
+    images: [absoluteUrl(notFoundOgImage)],
+  },
   robots: {
     index: false,
     follow: false,

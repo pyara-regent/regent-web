@@ -3,6 +3,10 @@ import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
 const defaultImage = "/regent/hero.png";
 const defaultImageAlt = "Regent Technologies industrial blade sharpening in Sri Lanka";
+const socialPreviewImageSize = {
+  width: 1200,
+  height: 630,
+} as const;
 
 type PageMetadataInput = {
   title: string;
@@ -22,6 +26,28 @@ export function absoluteUrl(path: string) {
   return `${getSiteUrl()}${normalizedPath}`;
 }
 
+export function createOgImagePath({
+  title,
+  description,
+  path,
+  image = defaultImage,
+}: {
+  title: string;
+  description: string;
+  path: `/${string}`;
+  image?: string;
+}) {
+  const params = new URLSearchParams({
+    title,
+    description,
+    path,
+    image,
+    fit: shouldContainOgImage(path, image) ? "contain" : "cover",
+  });
+
+  return `/api/og?${params.toString()}`;
+}
+
 export function createPageMetadata({
   title,
   description,
@@ -31,7 +57,7 @@ export function createPageMetadata({
   noIndex = false,
 }: PageMetadataInput): Metadata {
   const canonical = absoluteUrl(path);
-  const imageUrl = absoluteUrl(image);
+  const imageUrl = absoluteUrl(createOgImagePath({ title, description, path, image }));
   const fullTitle = `${title} - ${siteConfig.name}`;
 
   return {
@@ -52,8 +78,8 @@ export function createPageMetadata({
       images: [
         {
           url: imageUrl,
-          width: 1600,
-          height: 900,
+          width: socialPreviewImageSize.width,
+          height: socialPreviewImageSize.height,
           alt: imageAlt,
         },
       ],
@@ -83,8 +109,12 @@ export function createPageMetadata({
             "max-snippet": -1,
             "max-video-preview": -1,
           },
-        },
+    },
   };
+}
+
+function shouldContainOgImage(path: `/${string}`, image: string) {
+  return path.startsWith("/products") || image.includes("/regent/products/");
 }
 
 export const privateRouteRobots = {

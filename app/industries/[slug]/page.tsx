@@ -11,6 +11,7 @@ import {
   absoluteUrl,
   createBreadcrumbJsonLd,
   createPageMetadata,
+  getIndustryOgImagePath,
 } from "@/lib/seo";
 import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
@@ -39,6 +40,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     path: `/industries/${industry.slug}`,
     image: industry.image,
     imageAlt: industry.title,
+    socialImage: getIndustryOgImagePath(industry.slug),
   });
 }
 

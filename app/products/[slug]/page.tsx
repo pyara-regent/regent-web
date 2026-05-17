@@ -13,6 +13,7 @@ import {
   absoluteUrl,
   createBreadcrumbJsonLd,
   createPageMetadata,
+  getProductOgImagePath,
 } from "@/lib/seo";
 import { getSiteUrl } from "@/lib/site-config";
 
@@ -43,6 +44,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     path: `/products/${product.slug}`,
     image: product.images[0] ?? "/regent/products-main.png",
     imageAlt: product.name,
+    socialImage: getProductOgImagePath(product.slug),
   });
 }
 

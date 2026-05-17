@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { GoogleAnalytics } from "@/components/regent/analytics/google-analytics";
 import { JsonLd } from "@/components/regent/seo/json-ld";
-import { absoluteUrl, createOgImagePath } from "@/lib/seo";
+import { absoluteUrl, getPageOgImagePath } from "@/lib/seo";
 import { getSiteUrl, siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -12,12 +12,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const rootOgImage = createOgImagePath({
-  title: siteConfig.name,
-  description: siteConfig.description,
-  path: "/",
-  image: "/regent/hero.png",
-});
+const rootOgImage = getPageOgImagePath("/");
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -100,8 +95,8 @@ export default function RootLayout({
       name: siteConfig.legalName,
       alternateName: "Regent",
       url: siteUrl,
-      logo: absoluteUrl("/regent/brand/regent-logo-transparent.png"),
-      image: absoluteUrl("/regent/hero.png"),
+      logo: absoluteUrl("/regent/brand/regent-logo-transparent.jpg"),
+      image: absoluteUrl("/regent/hero.jpg"),
       description: siteConfig.description,
       email: siteConfig.email,
       telephone: siteConfig.phoneNumbers.map((phone) =>

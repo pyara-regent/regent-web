@@ -2,17 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
 import { SiteHeader } from "@/components/regent/layout/site-header";
-import { absoluteUrl, createOgImagePath } from "@/lib/seo";
+import { absoluteUrl, getPageOgImagePath } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
   "The requested Regent Technologies page could not be found. Return to the homepage or contact Regent Technologies for direct support.";
-const notFoundOgImage = createOgImagePath({
-  title: "Page Not Found",
-  description,
-  path: "/",
-  image: "/regent/hero.png",
-});
+const notFoundOgImage = getPageOgImagePath("/");
 
 export const metadata: Metadata = {
   title: "Page Not Found",

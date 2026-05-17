@@ -1,12 +1,77 @@
 import type { Metadata } from "next";
 import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
-const defaultImage = "/regent/hero.png";
 const defaultImageAlt = "Regent Technologies industrial blade sharpening in Sri Lanka";
 const socialPreviewImageSize = {
   width: 1200,
   height: 630,
 } as const;
+const staticPageOgImages: Record<string, string> = {
+  "/": "/og/home.jpg",
+  "/about": "/og/about.jpg",
+  "/services": "/og/services.jpg",
+  "/products": "/og/products.jpg",
+  "/industries": "/og/industries.jpg",
+  "/contact": "/og/contact.jpg",
+  "/faq": "/og/faq.jpg",
+  "/privacy-policy": "/og/privacy-policy.jpg",
+  "/terms-of-service": "/og/terms-of-service.jpg",
+};
+const productOgSlugs = new Set([
+  "precision-blade-sharpening",
+  "arden-router-bits",
+  "pneumatic-tools",
+  "pneumatic-brad-nailer-f50",
+  "pneumatic-brad-nailer-f32",
+  "pneumatic-stapler-1013j",
+  "pneumatic-stapler-422j",
+  "pneumatic-screwdrivers",
+  "power-tools",
+  "routers",
+  "industrial-drills",
+  "grinders",
+  "planers",
+  "jig-saws",
+  "circular-saws",
+  "screw-drivers",
+  "tyre-rebuilding-tools",
+  "tyre-buffing-blades",
+  "r6-refills",
+  "woodworking-tools",
+  "stainless-steel-tube-handles",
+  "drawer-runners",
+  "magnets",
+  "drawer-lockers",
+  "hinges-set",
+  "shelf-supports",
+  "sanding-rolls-belts",
+  "router-bits-boring-bits",
+  "tongue-groove-cutter-set",
+  "mortising-chisel-bit",
+  "hand-planer-blades",
+  "power-tool-accessories",
+  "nail-pins",
+  "stapler-pins",
+  "band-saw-blades",
+  "boring-bits",
+  "power-tool-circular-saw-blades",
+  "planer-blades",
+  "router-bits",
+  "screw-bits-bosch",
+  "tct-blades",
+  "hss-blades",
+  "maintenance-kits",
+  "technician-toolkits",
+  "rebuild-wheel-systems",
+]);
+const industryOgSlugs = new Set([
+  "woodworking-industry",
+  "furniture-manufacturing",
+  "packaging-industry",
+  "printing-industry",
+  "metal-fabrication",
+  "plastic-processing",
+]);
 
 type PageMetadataInput = {
   title: string;
@@ -14,6 +79,7 @@ type PageMetadataInput = {
   path: `/${string}`;
   image?: string;
   imageAlt?: string;
+  socialImage?: string;
   noIndex?: boolean;
 };
 
@@ -26,38 +92,44 @@ export function absoluteUrl(path: string) {
   return `${getSiteUrl()}${normalizedPath}`;
 }
 
-export function createOgImagePath({
-  title,
-  description,
-  path,
-  image = defaultImage,
-}: {
-  title: string;
-  description: string;
-  path: `/${string}`;
-  image?: string;
-}) {
-  const params = new URLSearchParams({
-    title,
-    description,
-    path,
-    image,
-    fit: shouldContainOgImage(path, image) ? "contain" : "cover",
-  });
+export function getPageOgImagePath(path: `/${string}`) {
+  if (staticPageOgImages[path]) {
+    return staticPageOgImages[path];
+  }
 
-  return `/api/og?${params.toString()}`;
+  const productSlug = path.match(/^\/products\/([^/?#]+)$/)?.[1];
+  if (productSlug) {
+    return getProductOgImagePath(productSlug);
+  }
+
+  const industrySlug = path.match(/^\/industries\/([^/?#]+)$/)?.[1];
+  if (industrySlug) {
+    return getIndustryOgImagePath(industrySlug);
+  }
+
+  return staticPageOgImages["/"];
+}
+
+export function getProductOgImagePath(slug: string) {
+  return productOgSlugs.has(slug) ? `/og/products-${slug}.jpg` : "/og/products.jpg";
+}
+
+export function getIndustryOgImagePath(slug: string) {
+  return industryOgSlugs.has(slug)
+    ? `/og/industries-${slug}.jpg`
+    : "/og/industries.jpg";
 }
 
 export function createPageMetadata({
   title,
   description,
   path,
-  image = defaultImage,
   imageAlt = defaultImageAlt,
+  socialImage,
   noIndex = false,
 }: PageMetadataInput): Metadata {
   const canonical = absoluteUrl(path);
-  const imageUrl = absoluteUrl(createOgImagePath({ title, description, path, image }));
+  const imageUrl = absoluteUrl(socialImage ?? getPageOgImagePath(path));
   const fullTitle = `${title} - ${siteConfig.name}`;
 
   return {
@@ -111,10 +183,6 @@ export function createPageMetadata({
           },
     },
   };
-}
-
-function shouldContainOgImage(path: `/${string}`, image: string) {
-  return path.startsWith("/products") || image.includes("/regent/products/");
 }
 
 export const privateRouteRobots = {

@@ -8,11 +8,19 @@ import {
 } from "@/lib/regent-content";
 import type { Service } from "@/lib/db/schema";
 import { siteConfig } from "@/lib/site-config";
-import { ArrowBullet, PillButton, SectionEyebrow } from "@/components/regent/ui/primitives";
+import { AboutImageSlider } from "@/components/regent/layout/about-image-slider";
+import {
+  ArrowBullet,
+  PillButton,
+  SectionEyebrow,
+} from "@/components/regent/ui/primitives";
 
 export function HomeAboutSection() {
   return (
-    <section id="about" className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[119px]">
+    <section
+      id="about"
+      className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[119px]"
+    >
       <div className="grid gap-12 lg:grid-cols-[551px_minmax(0,664px)] lg:items-center lg:justify-between">
         <div className="space-y-10">
           <div className="space-y-4">
@@ -23,8 +31,8 @@ export function HomeAboutSection() {
             <p className="text-lg leading-8 text-[var(--muted)]">
               Regent Technologies is a specialized industrial service provider
               with {siteConfig.experienceLabel.toLowerCase()} focused on
-              high-precision sharpening of TCT (Tungsten Carbide Tipped) and
-              HSS (High-Speed Steel) cutting tools.
+              high-precision sharpening of TCT (Tungsten Carbide Tipped) and HSS
+              (High-Speed Steel) cutting tools.
             </p>
           </div>
 
@@ -42,15 +50,8 @@ export function HomeAboutSection() {
           />
         </div>
 
-        <div className="relative overflow-hidden rounded-lg">
-          <Image
-            src="/regent/about.png"
-            alt="Grinding sparks during sharpening"
-            width={1500}
-            height={1500}
-            className="h-[420px] w-full object-cover object-center md:h-[600px]"
-            sizes="(max-width: 1024px) 100vw, 664px"
-          />
+        <div className="relative overflow-hidden rounded-lg h-[420px] md:h-[600px]">
+          <AboutImageSlider />
         </div>
       </div>
     </section>
@@ -69,10 +70,15 @@ export function IndustriesSection() {
             <p className="text-lg font-medium leading-7 text-[#767676]">
               We provide precision sharpening solutions for a wide range of
               industries that depend on sharp, reliable cutting tools for
-              efficient production, dependable turnaround, and repeatable quality.
+              efficient production, dependable turnaround, and repeatable
+              quality.
             </p>
           </div>
-          <PillButton href="/industries" label="View Industries" variant="text" />
+          <PillButton
+            href="/industries"
+            label="View Industries"
+            variant="text"
+          />
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -107,13 +113,17 @@ export function IndustriesSection() {
 
 export function HomeServicesSection({ services }: { services: Service[] }) {
   return (
-    <section id="services" className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]">
+    <section
+      id="services"
+      className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]"
+    >
       <div className="flex flex-col gap-6 text-center md:items-center">
         <h2 className="text-3xl font-bold leading-[1.25] text-[var(--foreground)] md:text-[32px] md:leading-[48px]">
           Our Services
         </h2>
         <p className="max-w-[720px] text-lg leading-8 text-[var(--muted)]">
-          See the main service options here, then visit the services page for the full details.
+          See the main service options here, then visit the services page for
+          the full details.
         </p>
         <PillButton href="/services" label="Know Our Services" variant="dark" />
       </div>
@@ -151,7 +161,10 @@ export function HomeServicesSection({ services }: { services: Service[] }) {
 
 export function ProductsPreviewSection() {
   return (
-    <section id="products" className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]">
+    <section
+      id="products"
+      className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]"
+    >
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-[760px] space-y-3">
           <SectionEyebrow label="Our Products" />
@@ -207,7 +220,7 @@ export function WhyRegentSection() {
       <div className="grid gap-10 lg:grid-cols-[664px_minmax(0,664px)] lg:items-start lg:justify-between">
         <div className="overflow-hidden rounded-lg lg:sticky lg:top-8">
           <Image
-            src="/regent/why-regent.png"
+            src="/regent/about/gallery-04.jpg"
             alt="Technician inspecting a blade"
             width={1000}
             height={1500}
@@ -219,12 +232,15 @@ export function WhyRegentSection() {
         <div className="space-y-6 px-0 md:px-12">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold leading-[1.25] text-[var(--foreground)] md:text-[32px] md:leading-[48px]">
-              Why Choose <span className="text-[var(--regent-red)]">Regent Technologies</span>
+              Why Choose{" "}
+              <span className="text-[var(--regent-red)]">
+                Regent Technologies
+              </span>
             </h2>
             <p className="text-lg leading-8 text-[var(--muted)]">
-              At Regent Technologies, we combine advanced sharpening
-              technology with industry expertise to deliver reliable blade
-              maintenance solutions for workshops, factories, and production teams.
+              At Regent Technologies, we combine advanced sharpening technology
+              with industry expertise to deliver reliable blade maintenance
+              solutions for workshops, factories, and production teams.
             </p>
           </div>
 

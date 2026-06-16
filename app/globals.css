@@ -99,3 +99,45 @@ img {
     mask-image: none;
   }
 }
+
+.gallery-carousel-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+}
+
+.gallery-carousel-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.gallery-carousel-group {
+  display: flex;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-carousel-mask * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .gallery-carousel-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}

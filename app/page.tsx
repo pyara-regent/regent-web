@@ -53,7 +53,8 @@ export default async function Page() {
               </h1>
               <p className="max-w-[763px] text-lg font-medium leading-7 text-[var(--muted-light)] md:text-[18px]">
                 Specialized sharpening for TCT &amp; HSS tools using fully
-                automated machines with integrated cooling technology, backed by {siteConfig.experienceLabel.toLowerCase()}.
+                automated machines with integrated cooling technology, backed by{" "}
+                {siteConfig.experienceLabel.toLowerCase()}.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">

@@ -4,10 +4,15 @@ import { PageHero } from "@/components/regent/layout/page-hero";
 import { SiteFooter } from "@/components/regent/layout/site-footer";
 import { JsonLd } from "@/components/regent/seo/json-ld";
 import { ContactCtaSection } from "@/components/regent/sections/contact-cta";
+import { GallerySection } from "@/components/regent/sections/gallery-section";
 import { PartnerCarouselSection } from "@/components/regent/sections/partner-carousel";
 import { SectionEyebrow } from "@/components/regent/ui/primitives";
 import { whyChoosePoints } from "@/lib/regent-content";
-import { absoluteUrl, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
+import {
+  absoluteUrl,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+} from "@/lib/seo";
 import { getSiteUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = createPageMetadata({
@@ -55,7 +60,9 @@ export default function Page() {
               Complete cutting support for demanding industrial work
             </h1>
             <p className="text-lg leading-8 text-[var(--muted)]">
-              Regent Technologies is a leading industrial tool sharpening and servicing company, offering precision solutions for woodworking, plastic, printing, and corrugated industries.
+              Regent Technologies is a leading industrial tool sharpening and
+              servicing company, offering precision solutions for woodworking,
+              plastic, printing, and corrugated industries.
             </p>
           </div>
           <div className="space-y-5 border-l-4 border-[var(--regent-red)] pl-6 text-lg leading-8 text-[var(--muted)]">
@@ -67,8 +74,8 @@ export default function Page() {
             </p>
             <p>
               Alongside sharpening and servicing, Regent imports and supplies
-              premium woodworking tools, accessories, and pneumatic machinery
-              to deliver complete cutting solutions from one trusted partner.
+              premium woodworking tools, accessories, and pneumatic machinery to
+              deliver complete cutting solutions from one trusted partner.
             </p>
           </div>
         </div>
@@ -91,16 +98,17 @@ export default function Page() {
           </div>
           <div className="border-l-4 border-[var(--regent-red)] pl-6 text-lg leading-8 text-[var(--muted-light)]">
             <p>
-              Our mission is to provide precision industrial tool sharpening
-              and high-quality cutting solutions using advanced European
-              technology. We are committed to improving tool performance,
-              extending tool life, reducing downtime, and building long-term
-              partnerships through reliable service, consistent quality, and
-              strong after-sales support.
+              Our mission is to provide precision industrial tool sharpening and
+              high-quality cutting solutions using advanced European technology.
+              We are committed to improving tool performance, extending tool
+              life, reducing downtime, and building long-term partnerships
+              through reliable service, consistent quality, and strong
+              after-sales support.
             </p>
           </div>
         </div>
       </section>
+      <GallerySection />
       <PartnerCarouselSection />
       <section className="bg-[var(--surface)]">
         <div className="mx-auto max-w-[1440px] px-4 py-20 md:px-12 md:py-[104px]">
@@ -108,7 +116,8 @@ export default function Page() {
             <div>
               <SectionEyebrow label="Why Regent" />
               <h2 className="mt-3 text-3xl font-bold leading-tight">
-                Reliable service, clear product support, and direct communication.
+                Reliable service, clear product support, and direct
+                communication.
               </h2>
             </div>
             <div className="grid gap-3 md:grid-cols-2">
